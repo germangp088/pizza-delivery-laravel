@@ -14,7 +14,7 @@
         "migrate:up": "php artisan migrate --seed",
         "migrate:reset": "php artisan migrate:reset",
         "migrate:recreate": "php artisan migrate:refresh --seed",
-        "test": "npm run ./vendor/bin/phpunit"
+        "test": "bash test.sh"
     },
     "devDependencies": {
         "axios": "^0.19",
