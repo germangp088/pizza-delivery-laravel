@@ -18,7 +18,7 @@ Route::get('/', function () {
 });
 
 Route::get('/product', 'ProductController');
-Route::get('/shippingfee', 'ShippingFeeController');
+Route::get('/shipping_fee', 'ShippingFeeController');
 Route::get('/currency', 'CurrencyController');
 Route::post('/order', 'OrderController@create');
 Route::get('/order/{ip}', 'OrderController@history');
