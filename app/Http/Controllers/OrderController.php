@@ -39,6 +39,7 @@ class OrderController extends Controller
         if($bill->isValid($billRequest)){
             $bill->persist($billRequest);
         } else {
+            $customer->delete();
             return response()->json([ "errorMessage" => "Bad Request"], 400);
         }
 
