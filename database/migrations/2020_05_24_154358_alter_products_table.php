@@ -14,8 +14,10 @@ class AlterProductsTable extends Migration
     public function up()
     {
         Schema::table('products', function (Blueprint $table) {
-            $table->dropForeign(['id_product_type']);
-			$table->foreign('id_product_type')->references('id')->on('product_types');
+            if (DB::getDriverName() !== 'sqlite') {
+                $table->dropForeign(['id_product_type']);
+                $table->foreign('id_product_type')->references('id')->on('product_types');
+            }
         });
     }
 
@@ -27,8 +29,10 @@ class AlterProductsTable extends Migration
     public function down()
     {
         Schema::table('products', function (Blueprint $table) {
-            $table->dropForeign(['id_product_type']);
-			$table->foreign('id_product_type')->references('id')->on('products');
+            if (DB::getDriverName() !== 'sqlite') {
+                $table->dropForeign(['id_product_type']);
+                $table->foreign('id_product_type')->references('id')->on('products');
+            }
         });
     }
 }
