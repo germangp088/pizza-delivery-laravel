@@ -15,6 +15,6 @@ class ShippingFeeController extends Controller
     {
         $shippingFee = ShippingFee::all();
         $shippingFeeList =  array('shippingFees' => $shippingFee);
-        return json_encode($shippingFeeList);
+        return response()->json($shippingFeeList);
     }
 }
