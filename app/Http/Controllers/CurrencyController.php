@@ -15,6 +15,6 @@ class CurrencyController extends Controller
     {
         $currencies = Currency::all();
         $currencyList =  array('currencies' => $currencies);
-        return json_encode($currencyList);
+        return response()->json($currencyList);
     }
 }

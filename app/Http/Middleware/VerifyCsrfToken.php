@@ -12,6 +12,6 @@ class VerifyCsrfToken extends Middleware
      * @var array
      */
     protected $except = [
-        //
+        'http://127.0.0.1:8000/order' //except order in local environment to consume it using postman.
     ];
 }
