@@ -39,6 +39,6 @@ class Customer extends Model
         $this->contact_number = $customer->contact_number;
         $this->delivery_address = $customer->delivery_address;
         $this->ip = $customer->ip;
-        $this->save();
+        return $this->save();
     }
 }

@@ -32,7 +32,7 @@ class Bill extends Model
         $this->id_currency = $bill->id_currency;
         $this->subtotal = $bill->subtotal;
         $this->shipping_fee = $bill->shipping_fee;
-        $this->save();
+        return $this->save();
     }
 
     public function currency() {
