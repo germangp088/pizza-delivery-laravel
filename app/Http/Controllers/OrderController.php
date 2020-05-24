@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Bill;
 use App\Customer;
 use Illuminate\Http\Request;
 
@@ -27,15 +28,21 @@ class OrderController extends Controller
     {
         $customer = new Customer();
         $customerRequest = json_decode(json_encode($request->customer));
-        if(!$customer->isValid($customerRequest)){
-            return response()->json([
-                "errorMessage" => "Bad Request"
-              ], 400);
-        } else {
+        if($customer->isValid($customerRequest)){
             $customer->persist($customerRequest);
+        } else {
+            return response()->json(["errorMessage" => "Bad Request"], 400);
         }
 
-        return response()->json($customer->id);
+        $bill = new Bill();
+        $billRequest = json_decode(json_encode($request->bill));
+        if($bill->isValid($billRequest)){
+            $bill->persist($billRequest);
+        } else {
+            return response()->json([ "errorMessage" => "Bad Request"], 400);
+        }
+
+        return response()->json($bill->id);
     }
 
     /**
