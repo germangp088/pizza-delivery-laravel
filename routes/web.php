@@ -21,4 +21,4 @@ Route::get('/product', 'ProductController');
 Route::get('/shipping_fee', 'ShippingFeeController');
 Route::get('/currency', 'CurrencyController');
 Route::post('/order', 'OrderController@create');
-Route::get('/order/{ip}', 'OrderController@history');
+Route::get('/order/history/{ip}', 'OrderController@history');

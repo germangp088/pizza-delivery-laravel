@@ -6,8 +6,8 @@ use App\Bill;
 use App\Customer;
 use App\Order;
 use App\OrderDetail;
-use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
@@ -18,7 +18,18 @@ class OrderController extends Controller
      */
     public function history($ip)
     {
-        //
+        $history = DB::table('orders')
+            ->join('customers', 'customers.id', '=', 'orders.id_customer')
+            ->join('bills', 'bills.id', '=', 'orders.id_bill')
+            ->join('currencies', 'currencies.id', '=', 'bills.id_currency')
+            ->join('order_details', 'orders.id', '=', 'order_details.id_order')
+            ->join('products', 'products.id', '=', 'order_details.id_product')
+            ->where('ip', $ip)
+            ->select('orders.id as id_order', 'orders.date', 'customers.name as customer', 'bills.subtotal',
+            'bills.shipping_fee', 'currencies.currency', 'order_details.price', 'products.image',
+            'order_details.quantity', 'products.name as product')
+            ->get();
+        return response()->json($history);
     }
 
     /**
@@ -31,26 +42,17 @@ class OrderController extends Controller
     {
         $customer = new Customer();
         $customerRequest = json_decode(json_encode($request->customer));
-        if($customer->isValid($customerRequest)){
-            $saved = $customer->persist($customerRequest);
-            if(!$saved) {
-                return response()->json([ "errorMessage" => "Error on save customer"], 500);
-            }
-        } else {
-            return response()->json(["errorMessage" => "Bad Request"], 400);
+        $result = $customer->persist($customerRequest);
+        if(!$result->success) {
+            return response()->json([ "errorMessage" => $result->message], $result->status);
         }
 
         $bill = new Bill();
         $billRequest = json_decode(json_encode($request->bill));
-        if($bill->isValid($billRequest)){
-            $saved = $bill->persist($billRequest);
-            if(!$saved) {
-                $this->rollback($customer);
-                return response()->json([ "errorMessage" => "Error on save bill"], 500);
-            }
-        } else {
+        $result = $bill->persist($billRequest);
+        if(!$result->success) {
             $this->rollback($customer);
-            return response()->json([ "errorMessage" => "Bad Request"], 400);
+            return response()->json([ "errorMessage" => $result->message], $result->status);
         }
 
         $order = new Order();
@@ -69,38 +71,24 @@ class OrderController extends Controller
         foreach ($productsRequest as $product) {
             $orderDetail = new OrderDetail();
             $orderDetail->id_order = $order->id;
-            if($orderDetail->isValid($product)){
-                $saved = $orderDetail->persist($product);
-                if(!$saved) {
-                    $this->rollback($customer, $bill, $orderDetailList);
-                    return response()->json([ "errorMessage" => "Error on save order details"], 500);
-                }
-                array_push($orderDetailList, $orderDetail);
-            } else {
-                $this->rollback($customer, $bill, $orderDetailList);
-                return response()->json([ "errorMessage" => "Bad Request"], 400);
+
+            $result = $orderDetail->persist($product);
+            if(!$result->success) {
+                $this->rollback($customer, $bill, $order, $orderDetailList);
+                return response()->json([ "errorMessage" => $result->message], $result->status);
             }
+            array_push($orderDetailList, $orderDetail);
         }
 
         return response()->json([ "message" => "Success"], 201);
     }
 
-    private function rollback($customer, $bill = null, $orderDetailList = []) {
-        $customer && $customer->delete();
-        $bill && $bill->delete();
+    private function rollback($customer, $bill = null, $order = null, $orderDetailList = []) {
+        $order && $order->delete();
         foreach ($orderDetailList as $orderDetail) {
             $orderDetail->delete();
         }
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+        $customer && $customer->delete();
+        $bill && $bill->delete();
     }
 }

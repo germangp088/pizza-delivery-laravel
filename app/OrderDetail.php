@@ -11,11 +11,13 @@ class OrderDetail extends Model
         try {
             $rules = array(
                 'id_product' => 'required|exists:products,id',
+                'price' => 'required|numeric',
                 'quantity' => 'required|numeric'
             );
 
             $validatorArray = array(
                 'id_product' => $product->id_product,
+                'price' => $product->price,
                 'quantity' => $product->quantity
             );
 
@@ -27,9 +29,25 @@ class OrderDetail extends Model
     }
 
     public function persist($product) {
+        $result = new Result();
+
+        if(!$this->isValid($product)){
+            $result->build(false, "Bad Request", 400);
+            return $result;
+        }
+
         $this->id_product = $product->id_product;
+        $this->price = $product->price;
         $this->quantity = $product->quantity;
-        return $this->save();
+        $saved = $this->save();
+
+        if(!$saved) {
+            $result->build(false, "Error on save order details", 500);
+            return $result;
+        }
+
+        $result->build(true);
+        return $result;
     }
 
     public function order() {

@@ -34,11 +34,26 @@ class Customer extends Model
     }
 
     public function persist($customer) {
+        $result = new Result();
+
+        if(!$this->isValid($customer)){
+            $result->build(false, "Bad Request", 400);
+            return $result;
+        }
+
         $this->name = $customer->name;
         $this->email = $customer->email;
         $this->contact_number = $customer->contact_number;
         $this->delivery_address = $customer->delivery_address;
         $this->ip = $customer->ip;
-        return $this->save();
+        $saved = $this->save();
+
+        if(!$saved) {
+            $result->build(false, "Error on save customer", 500);
+            return $result;
+        }
+
+        $result->build(true);
+        return $result;
     }
 }
