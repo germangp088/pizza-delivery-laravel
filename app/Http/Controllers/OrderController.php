@@ -42,26 +42,17 @@ class OrderController extends Controller
     {
         $customer = new Customer();
         $customerRequest = json_decode(json_encode($request->customer));
-        if($customer->isValid($customerRequest)){
-            $saved = $customer->persist($customerRequest);
-            if(!$saved) {
-                return response()->json([ "errorMessage" => "Error on save customer"], 500);
-            }
-        } else {
-            return response()->json(["errorMessage" => "Bad Request"], 400);
+        $result = $customer->persist($customerRequest);
+        if(!$result->success) {
+            return response()->json([ "errorMessage" => $result->message], $result->status);
         }
 
         $bill = new Bill();
         $billRequest = json_decode(json_encode($request->bill));
-        if($bill->isValid($billRequest)){
-            $saved = $bill->persist($billRequest);
-            if(!$saved) {
-                $this->rollback($customer);
-                return response()->json([ "errorMessage" => "Error on save bill"], 500);
-            }
-        } else {
+        $result = $bill->persist($billRequest);
+        if(!$result->success) {
             $this->rollback($customer);
-            return response()->json([ "errorMessage" => "Bad Request"], 400);
+            return response()->json([ "errorMessage" => $result->message], $result->status);
         }
 
         $order = new Order();
@@ -80,27 +71,24 @@ class OrderController extends Controller
         foreach ($productsRequest as $product) {
             $orderDetail = new OrderDetail();
             $orderDetail->id_order = $order->id;
-            if($orderDetail->isValid($product)){
-                $saved = $orderDetail->persist($product);
-                if(!$saved) {
-                    $this->rollback($customer, $bill, $orderDetailList);
-                    return response()->json([ "errorMessage" => "Error on save order details"], 500);
-                }
-                array_push($orderDetailList, $orderDetail);
-            } else {
-                $this->rollback($customer, $bill, $orderDetailList);
-                return response()->json([ "errorMessage" => "Bad Request"], 400);
+
+            $result = $orderDetail->persist($product);
+            if(!$result->success) {
+                $this->rollback($customer, $bill, $order, $orderDetailList);
+                return response()->json([ "errorMessage" => $result->message], $result->status);
             }
+            array_push($orderDetailList, $orderDetail);
         }
 
         return response()->json([ "message" => "Success"], 201);
     }
 
-    private function rollback($customer, $bill = null, $orderDetailList = []) {
-        $customer && $customer->delete();
-        $bill && $bill->delete();
+    private function rollback($customer, $bill = null, $order = null, $orderDetailList = []) {
+        $order && $order->delete();
         foreach ($orderDetailList as $orderDetail) {
             $orderDetail->delete();
         }
+        $customer && $customer->delete();
+        $bill && $bill->delete();
     }
 }
