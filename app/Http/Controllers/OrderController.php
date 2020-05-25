@@ -6,8 +6,8 @@ use App\Bill;
 use App\Customer;
 use App\Order;
 use App\OrderDetail;
-use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
@@ -18,7 +18,18 @@ class OrderController extends Controller
      */
     public function history($ip)
     {
-        //
+        $history = DB::table('orders')
+            ->join('customers', 'customers.id', '=', 'orders.id_customer')
+            ->join('bills', 'bills.id', '=', 'orders.id_bill')
+            ->join('currencies', 'currencies.id', '=', 'bills.id_currency')
+            ->join('order_details', 'orders.id', '=', 'order_details.id_order')
+            ->join('products', 'products.id', '=', 'order_details.id_product')
+            ->where('ip', $ip)
+            ->select('orders.id as id_order', 'orders.date', 'customers.name as customer', 'bills.subtotal',
+            'bills.shipping_fee', 'currencies.currency', 'order_details.price', 'products.image',
+            'order_details.quantity', 'products.name as product')
+            ->get();
+        return response()->json($history);
     }
 
     /**
@@ -91,16 +102,5 @@ class OrderController extends Controller
         foreach ($orderDetailList as $orderDetail) {
             $orderDetail->delete();
         }
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
     }
 }

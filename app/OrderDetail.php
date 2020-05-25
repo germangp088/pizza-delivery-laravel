@@ -28,6 +28,7 @@ class OrderDetail extends Model
 
     public function persist($product) {
         $this->id_product = $product->id_product;
+        $this->price = $product->price;
         $this->quantity = $product->quantity;
         return $this->save();
     }
