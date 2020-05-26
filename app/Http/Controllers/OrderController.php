@@ -80,7 +80,7 @@ class OrderController extends Controller
             array_push($orderDetailList, $orderDetail);
         }
 
-        return response()->json([ "message" => "Success"], 201);
+        return response()->json($order->id, 201);
     }
 
     private function rollback($customer, $bill = null, $order = null, $orderDetailList = []) {
