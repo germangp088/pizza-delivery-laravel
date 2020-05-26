@@ -69,7 +69,7 @@ class ProductSeeder extends Seeder
         ]);
         DB::table('products')->insert([
             'id_product_type' => '2',
-            'name' => 'Ice cream',
+            'name' => 'Gelato',
             'description' => 'Vanilla, chocolatte, strawberry.',
             'image' => '8.jpg',
             'price' => '1.9'
@@ -104,7 +104,7 @@ class ProductSeeder extends Seeder
         ]);
         DB::table('products')->insert([
             'id_product_type' => '3',
-            'name' => 'Orange Juice',
+            'name' => 'Succo di arance',
             'description' => '1l',
             'image' => '13.jpg',
             'price' => '1.99'
