@@ -13,8 +13,7 @@ class ShippingFeeController extends Controller
      */
     public function __invoke()
     {
-        $shippingFee = ShippingFee::all();
-        $shippingFeeList =  array('shippingFees' => $shippingFee);
-        return response()->json($shippingFeeList);
+        $shippingFee = ShippingFee::all()->first();
+        return response()->json($shippingFee);
     }
 }
