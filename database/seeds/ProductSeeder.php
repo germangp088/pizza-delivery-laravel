@@ -91,21 +91,21 @@ class ProductSeeder extends Seeder
         DB::table('products')->insert([
             'id_product_type' => '3',
             'name' => 'Heineken',
-            'description' => '1l.',
+            'description' => '1l',
             'image' => '11.jpg',
             'price' => '4.5'
         ]);
         DB::table('products')->insert([
             'id_product_type' => '3',
             'name' => 'Coke',
-            'description' => '0.5l.',
+            'description' => '0.5l',
             'image' => '12.jpg',
             'price' => '2.5'
         ]);
         DB::table('products')->insert([
             'id_product_type' => '3',
             'name' => 'Orange Juice',
-            'description' => '0.5l.',
+            'description' => '1l',
             'image' => '13.jpg',
             'price' => '1.99'
         ]);
