@@ -14,7 +14,7 @@ class AlterTableOrderDetails extends Migration
     public function up()
     {
         Schema::table('order_details', function (Blueprint $table) {
-            $table->float('price', 6, 2, true)->after('id_product');
+            $table->float('price', 6, 2, true)->after('id_product')->default(0);
         });
     }
 
