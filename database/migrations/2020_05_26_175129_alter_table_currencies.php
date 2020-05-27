@@ -14,7 +14,7 @@ class AlterTableCurrencies extends Migration
     public function up()
     {
         Schema::table('currencies', function (Blueprint $table) {
-            $table->enum('symbol', ['€', '$'])->default('')->after('id');
+            $table->enum('symbol', ['€', '$'])->default('€')->after('id');
         });
     }
 
