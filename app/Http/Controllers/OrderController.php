@@ -25,9 +25,10 @@ class OrderController extends Controller
             ->join('order_details', 'orders.id', '=', 'order_details.id_order')
             ->join('products', 'products.id', '=', 'order_details.id_product')
             ->where('ip', $ip)
+            ->orderBy('orders.id')
             ->select('orders.id as id_order', 'orders.date', 'customers.name as customer', 'bills.subtotal',
-            'bills.shipping_fee', 'currencies.currency', 'order_details.price', 'products.image',
-            'order_details.quantity', 'products.name as product')
+            'bills.shipping_fee', 'currencies.symbol', 'order_details.price', 'products.image',
+            'order_details.quantity', 'products.name', 'products.description')
             ->get();
         return response()->json($history);
     }
@@ -80,7 +81,7 @@ class OrderController extends Controller
             array_push($orderDetailList, $orderDetail);
         }
 
-        return response()->json([ "message" => "Success"], 201);
+        return response()->json($order->id, 201);
     }
 
     private function rollback($customer, $bill = null, $order = null, $orderDetailList = []) {

@@ -20,10 +20,10 @@ class CurrencyTest extends TestCase
         $response = $this->get('/currency');
         $response
         ->assertStatus(200)
-        ->assertJsonStructure(['currencies'=>[['id', 'currency', 'created_at', 'updated_at']]])
+        ->assertJsonStructure(['currencies'=>[['id', 'symbol', 'currency', 'created_at', 'updated_at']]])
         ->assertExactJson(
-            ['currencies'=>[['id' => 1, 'currency' => "Euro" , 'created_at' => null, 'updated_at' => null],
-            ['id' => 2, 'currency' => "US$" , 'created_at' => null, 'updated_at' => null]],
+            ['currencies'=>[['id' => 1, 'symbol' => '€', 'currency' => "Euro" , 'created_at' => null, 'updated_at' => null],
+            ['id' => 2, 'symbol' => "$", 'currency' => "US$" , 'created_at' => null, 'updated_at' => null]],
         ]);
     }
 }

@@ -12,10 +12,12 @@ class CurrencySeeder extends Seeder
     public function run()
     {
         DB::table('currencies')->insert([
-            'currency' => 'Euro'
+            'currency' => 'Euro',
+            'symbol' => '€'
         ]);
         DB::table('currencies')->insert([
-            'currency' => 'US$'
+            'currency' => 'US$',
+            'symbol' => '$'
         ]);
     }
 }

@@ -21,9 +21,7 @@ class ShippingFeeTest extends TestCase
         $response = $this->get('/shipping_fee');
         $response
         ->assertStatus(200)
-        ->assertJsonStructure(['shippingFees'=>[['id', 'shipping_fee', 'created_at', 'updated_at']]])
-        ->assertExactJson(
-            ['shippingFees'=>[['id' => 1, 'shipping_fee' => '1.99' , 'created_at' => null, 'updated_at' => null]],
-        ]);
+        ->assertJsonStructure(['id', 'shipping_fee', 'created_at', 'updated_at'])
+        ->assertExactJson(['id' => 1, 'shipping_fee' => '1.99' , 'created_at' => null, 'updated_at' => null]);
     }
 }
