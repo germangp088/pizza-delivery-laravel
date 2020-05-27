@@ -28,7 +28,7 @@ class OrderController extends Controller
             ->orderBy('orders.id')
             ->select('orders.id as id_order', 'orders.date', 'customers.name as customer', 'bills.subtotal',
             'bills.shipping_fee', 'currencies.symbol', 'order_details.price', 'products.image',
-            'order_details.quantity', 'products.name as product')
+            'order_details.quantity', 'products.name', 'products.description')
             ->get();
         return response()->json($history);
     }
