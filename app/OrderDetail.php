@@ -11,8 +11,8 @@ class OrderDetail extends Model
         try {
             $rules = array(
                 'id_product' => 'required|exists:products,id',
-                'price' => 'required|numeric',
-                'quantity' => 'required|numeric'
+                'price' => 'required|numeric|max:255',
+                'quantity' => 'required|numeric|max:10'
             );
 
             $validatorArray = array(
