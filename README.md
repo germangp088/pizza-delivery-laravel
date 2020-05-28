@@ -2,7 +2,7 @@
 Back-end service built on laravel for pizza-delivery project.
 
 ### Gitflow
-Tasks where posted on [Trello](https://trello.com/b/tI2dQlTA/pizza-delivery-laravel) kanban, you can follow [Github](https://github.com/germangp088/pizza-delivery-laravel) closed branches you can inspect gitflow to know how development lifecycle where going.
+Tasks where posted on [Github](https://github.com/germangp088/pizza-delivery-laravel/projects/1) kanban, you can follow [Github](https://github.com/germangp088/pizza-delivery-laravel) closed branches you can inspect gitflow to know how development lifecycle where going.
 
 ### Installation
 
