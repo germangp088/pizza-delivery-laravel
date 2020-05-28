@@ -11,11 +11,11 @@ class Customer extends Model
     public function isValid($customer) {
         try {
             $rules = array(
-                'name' => 'required|string',
-                'email' => 'required|string',
-                'contact_number' => 'required|string',
+                'name' => 'required|string|max:255',
+                'email' => 'required|string|max:100',
+                'contact_number' => 'required|string|max:50',
                 'delivery_address' => 'required|string',
-                'ip' => 'required|string'
+                'ip' => 'required|string|max:45'
             );
 
             $validatorArray = array(

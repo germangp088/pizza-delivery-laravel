@@ -85,10 +85,10 @@ class OrderController extends Controller
     }
 
     private function rollback($customer, $bill = null, $order = null, $orderDetailList = []) {
-        $order && $order->delete();
         foreach ($orderDetailList as $orderDetail) {
             $orderDetail->delete();
         }
+        $order && $order->delete();
         $customer && $customer->delete();
         $bill && $bill->delete();
     }
