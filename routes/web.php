@@ -13,10 +13,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Route::get('/product', 'ProductController');
 Route::get('/shipping_fee', 'ShippingFeeController');
 Route::get('/currency', 'CurrencyController');
