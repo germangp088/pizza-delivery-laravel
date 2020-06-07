@@ -14,6 +14,8 @@ $ composer install
 ```
 
 ### Migrations
+You must create a new mysql database called 'pizza_delivery', you could run the ./database/db.sql file.
+Run this command after create the database:
 ```sh
 $ npm run migrate:up
 ```
