@@ -13,6 +13,11 @@ $ npm install
 $ composer install
 ```
 
+### Migrations
+```sh
+$ npm run migrate:up
+```
+
 ### Run
 
 ```sh
